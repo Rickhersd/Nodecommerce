@@ -8,7 +8,6 @@
     "build": "npx tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
-
   },
   "repository": {
     "type": "git",
@@ -28,6 +27,7 @@
   "homepage": "https://github.com/Rickhersd/node-Ecommerce#readme",
   "dependencies": {
     "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.2.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
