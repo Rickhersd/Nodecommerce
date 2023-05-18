@@ -3,13 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const dbConnect = require("./config/dbConnect")
 const app: Express = express();
-const port = process.env.PORT;
-
+const PORT = process.env.PORT;
+dbConnect()
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + dasdas TypeScript Server');
 });
 
-app.listen(8080, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${8080}`);
+app.listen(PORT, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
 });
