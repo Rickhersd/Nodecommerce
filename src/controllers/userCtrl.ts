@@ -39,4 +39,50 @@ const loginUserCtrl = asyncHandler( async (req: Request, res: Response) => {
   }
 })
 
-export default { createUser, loginUserCtrl };
+const getAllUser= asyncHandler( async (req: Request, res: Response) => {
+  try{
+    const getUsers = await User.find();
+    res.json(getUsers)
+  } catch(error){
+    throw new Error(error as string)
+  }
+})
+
+const updateUser =  asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const updateUser = await User.findByIdAndUpdate(id, {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      mobile: req.body.mobile,
+    },{
+      new: true,
+    });
+    res.json(updateUser)
+  } catch(error){
+    throw new Error(error as string)
+  }
+})
+
+const getUser = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const getUser = await User.findById(id);
+    res.json(getUser)
+  } catch(error){
+    throw new Error(error as string)
+  }
+})
+
+const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try{
+    const deleteUser = await User.findByIdAndDelete(id);
+    res.json(deleteUser)
+  } catch(error){
+    throw new Error(error as string)
+  }
+})
+
+export default { createUser, loginUserCtrl, getAllUser, getUser, deleteUser, updateUser};
