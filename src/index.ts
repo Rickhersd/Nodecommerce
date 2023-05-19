@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import authRouter from './routes/authRoute'
+import errorHandler from './middleware/errorHandler';
 
 const dbConnect = require("./config/dbConnect")
 const app: Express = express();
@@ -14,6 +15,9 @@ dbConnect()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use('/api/user', authRouter)
+
+app.use(errorHandler.notFound);
+app.use(errorHandler.errorHandler)
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);

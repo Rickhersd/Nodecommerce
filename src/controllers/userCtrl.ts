@@ -1,9 +1,11 @@
+import { Request, Response } from 'express';
+import asyncHandler from 'express-async-handler'
+import generateToken from '../config/jwtToken'
 import User from '../models/userModel'
+import { ObjectId } from 'mongoose';
 
-// @ts-expect-error
-const createUser = async (req, res) => {
+const createUser = asyncHandler( async (req: Request, res: Response) => {
   const email = req.body.email;
-  console.log('res')
   const findUser = await User.findOne({email: email})
   if(!findUser){
     
@@ -11,11 +13,30 @@ const createUser = async (req, res) => {
     res.json(newUser)
   }
   else {
-    res.json({
-      msg: 'User Already Exists',
-      success: false,
-    })    
+    throw new Error('User Already Exists')
   }
-};
+});
 
-export default createUser;
+const loginUserCtrl = asyncHandler( async (req: Request, res: Response) => {
+  const { email, password }  = req.body;
+  const findUser = await User.findOne({email: email})
+  console.log(typeof password)
+
+  // @ts-expect-error
+  if(findUser && (await findUser.isPasswordMatched(password))){
+    res.json({
+      _id: findUser._id,
+      firstname: findUser.firstname,
+      lastname: findUser.lastname,
+      email: findUser.email,
+      mobile: findUser.mobile,
+      token: generateToken(findUser._id as unknown as ObjectId )
+    })
+  }
+  else {
+    throw new Error('Invalid Credentials')
+
+  }
+})
+
+export default { createUser, loginUserCtrl };
